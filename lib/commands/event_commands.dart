@@ -1,13 +1,10 @@
 import 'dart:io';
 
-import 'package:asset_compressor/helpers/check_file_exists.dart';
 import 'package:bosun/bosun.dart';
 
 import '../conf.dart';
-import '../exceptions/missing_directory_exception.dart';
-import '../exceptions/missing_file_exception.dart';
-import '../helpers/check_directory_exists.dart';
-import '../helpers/create_directory_if_do_not_exists.dart';
+import '../exceptions/exception_exports.dart';
+import '../helpers/helper_exports.dart';
 
 class EventCommand extends Command {
   EventCommand()

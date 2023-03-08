@@ -4,10 +4,8 @@ import 'package:asset_compressor/extensions/extensions_on_file_system_entity.dar
 import 'package:bosun/bosun.dart';
 
 import '../conf.dart';
-import '../exceptions/already_present_file_type.dart';
-import '../exceptions/missing_directory_exception.dart';
-import '../exceptions/missing_ticket_folder_exception.dart';
-import '../helpers/check_directory_exists.dart';
+import '../exceptions/exception_exports.dart';
+import '../helpers/helper_exports.dart';
 import '../ticket.dart';
 
 class TicketCommand extends Command {
@@ -91,19 +89,19 @@ Future<Ticket> _getTicket(String ticketPath, String baseName, {String? eventId})
     if (entity is File) {
       if (Conf.threeDExtensions.contains(entity.extension)) {
         if (ticket.has3D == true) {
-          throw AlreadyPresentFileType(fileType: '3D', extensions: Conf.threeDExtensions, directoryPath: ticketPath);
+          throw AlreadyPresentFileTypeException(fileType: '3D', extensions: Conf.threeDExtensions, directoryPath: ticketPath);
         }
         ticket.threeDPath = entity.path;
         ticket.has3D = true;
       } else if (Conf.imageExtensions.contains(entity.extension)) {
         if (ticket.hasImage == true) {
-          throw AlreadyPresentFileType(fileType: 'Image', extensions: Conf.imageExtensions, directoryPath: ticketPath);
+          throw AlreadyPresentFileTypeException(fileType: 'Image', extensions: Conf.imageExtensions, directoryPath: ticketPath);
         }
         ticket.imagePath = entity.path;
         ticket.hasImage = true;
       } else if (Conf.videoExtensions.contains(entity.extension)) {
         if (ticket.hasVideo == true) {
-          throw AlreadyPresentFileType(fileType: 'Video', extensions: Conf.videoExtensions, directoryPath: ticketPath);
+          throw AlreadyPresentFileTypeException(fileType: 'Video', extensions: Conf.videoExtensions, directoryPath: ticketPath);
         }
         ticket.videoPath = entity.path;
         ticket.hasVideo = true;

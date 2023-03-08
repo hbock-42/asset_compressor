@@ -1,9 +1,9 @@
-class AlreadyPresentFileType implements Exception {
+class AlreadyPresentFileTypeException implements Exception {
   final String fileType;
   final List<String> extensions;
   final String directoryPath;
 
-  AlreadyPresentFileType({
+  AlreadyPresentFileTypeException({
     required this.fileType,
     required this.extensions,
     required this.directoryPath,

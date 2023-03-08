@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:asset_compressor/conf.dart';
+
 import 'package:asset_compressor/extensions/extensions_on_file_system_entity.dart';
 
-import 'exceptions/missing_computable_ticket_assets_exception.dart';
-import 'exceptions/only_three_d_file_asset_found_exception.dart';
-import 'helpers/create_directory_if_do_not_exists.dart';
+import 'conf.dart';
+import 'exceptions/exception_exports.dart';
+import 'helpers/helper_exports.dart';
 
 class Ticket {
   final String ticketFolderPath;
