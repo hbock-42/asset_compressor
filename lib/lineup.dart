@@ -22,8 +22,6 @@ class Lineup {
   }
 
   void _cropAndScale(int size) {
-    // ffmpeg -i src/lineup/vert.jpg  -vf "crop='min(iw, ih)':'min(iw, ih)':'(iw/2
-    // )-min(iw, ih)/2':'(ih/2)-min(iw, ih)/2',scale=w=200:h=200:force_original_aspect_ratio=increase" -y resized_verti.jpg
     Process.run(
       'ffmpeg',
       [
@@ -32,7 +30,7 @@ class Lineup {
         '-vf',
         "crop='min(iw, ih)':'min(iw, ih)':'(iw/2)-min(iw, ih)/2':'(ih/2)-min(iw, ih)/2',scale=w=$size:h=$size:force_original_aspect_ratio=increase",
         '-y',
-        '$exportFolderPath/${eventId != null ? '${eventId}_' : ''}$baseName.jpg'
+        '$exportFolderPath/${eventId != null ? '${eventId}_' : ''}${baseName.toLowerCase().replaceAll(' ', '-')}.jpg'
       ],
       workingDirectory: './',
     ).then((result) {
