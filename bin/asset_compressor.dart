@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:asset_compressor/commands/event_commands.dart';
+import 'package:asset_compressor/commands/lineup_command.dart';
 import 'package:asset_compressor/commands/ticket_commands.dart';
 
 import 'package:bosun/bosun.dart';
@@ -10,6 +11,7 @@ void main(List<String> args) {
     BosunCommand('asset-compressor', subcommands: [
       EventCommand(),
       TicketCommand(),
+      LineupCommand(),
     ]),
     args,
   );

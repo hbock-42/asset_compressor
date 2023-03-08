@@ -8,17 +8,17 @@ import 'exceptions/exception_exports.dart';
 import 'helpers/helper_exports.dart';
 
 class Ticket {
-  final String ticketFolderPath;
+  final String folderPath;
   final String baseName;
   final String? eventId;
 
   Ticket({
-    required this.ticketFolderPath,
+    required this.folderPath,
     required this.baseName,
     this.eventId,
   });
 
-  String get exportFolderPath => '${Conf.assetOutputPath}/${Conf.ticketPath}/$baseName';
+  String get exportFolderPath => '${Conf.assetExportPath}/${Conf.ticketPath}/$baseName';
 
   bool has3D = false;
   bool hasImage = false;
@@ -29,10 +29,10 @@ class Ticket {
 
   void validate() {
     if (!hasImage && !hasVideo && !has3D) {
-      throw MissingComputableTicketAssetsException(ticketFolderPath);
+      throw MissingComputableTicketAssetsException(folderPath);
     }
     if (has3D && !hasImage && !hasVideo) {
-      throw OnlyThreeDFileAssetFoundException(ticketFolderPath);
+      throw OnlyThreeDFileAssetFoundException(folderPath);
     }
   }
 

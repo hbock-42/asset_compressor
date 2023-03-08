@@ -14,7 +14,7 @@ class EventCommand extends Command {
             EventBuildAssetCommand(),
             EventCheckAssetCommand(),
           ],
-          description: 'command to work on event',
+          description: 'command to work on event assets',
         );
 }
 
@@ -27,7 +27,7 @@ class EventBuildAssetCommand extends Command {
     // This will be executed before the command above is executed
     final verticalSrcPath =
         await checkFileExists(Conf.srcVerticalAssetJpg) ? Conf.srcVerticalAssetJpg : Conf.srcVerticalAssetPng;
-    createDirectoryIfDoNotExists('${Conf.assetOutputPath}/${Conf.eventPath}');
+    createDirectoryIfDoNotExists('${Conf.assetExportPath}/${Conf.eventPath}');
     _compressImageAsset(
       assetPath: verticalSrcPath,
       outputPath: Conf.eventVerticalAssetJpgExportPath,

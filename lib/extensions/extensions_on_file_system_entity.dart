@@ -5,6 +5,10 @@ extension FileExtention on FileSystemEntity{
     return path.split("/").last;
   }
 
+  String get nameWithoutExtension {
+    return path.split("/").last.split('.').first;
+  }
+
   String get extension {
     return path.split(".").last;
   }

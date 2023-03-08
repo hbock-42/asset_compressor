@@ -4,3 +4,4 @@ export 'missing_directory_exception.dart';
 export 'missing_file_exception.dart';
 export 'missing_ticket_folder_exception.dart';
 export 'only_three_d_file_asset_found_exception.dart';
+export 'wrong_lineup_file_type_exception.dart';

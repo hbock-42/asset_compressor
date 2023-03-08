@@ -1,8 +1,8 @@
 class Conf {
   static const String assetSrcPath = 'src';
-  static const String assetOutputPath = 'ready-to-deploy';
+  static const String assetExportPath = 'ready-to-deploy';
   static const String eventPath = 'event';
-  static const String lineUpPath = 'lineUp';
+  static const String lineupPath = 'lineup';
   static const String ticketPath = 'ticket';
   static const String srcVerticalAssetName = 'vertical';
   static const String srcHorizontalAssetName = 'horizontal';
@@ -17,6 +17,7 @@ class Conf {
   static const int thumbnailMaxHeight = 200;
   static const int displayMaxHeight = 780;
   static const int artifactMaxHeight = 2400;
+  static const int lineupAssetSize = 150;
 
   static int get thumbnailMaxWidth => (thumbnailMaxHeight * ticketImageAspectRatio).round();
 
@@ -24,9 +25,11 @@ class Conf {
 
   static int get artifactMaxWidth => (artifactMaxHeight * ticketImageAspectRatio).round();
 
-
-  static List<String> get computableTicketAssetExtensions =>
-      [...imageExtensions, ...videoExtensions, ...threeDExtensions];
+  static List<String> get computableTicketAssetExtensions => [
+        ...imageExtensions,
+        ...videoExtensions,
+        ...threeDExtensions,
+      ];
 
   static String get eventSrcPath => '$assetSrcPath/$eventPath';
 
@@ -34,13 +37,16 @@ class Conf {
 
   static String get srcVerticalAssetJpg => '$eventSrcPath/$srcVerticalAssetName.jpg';
 
-  static String get eventVerticalAssetJpgExportPath => '$assetOutputPath/$eventPath/$srcVerticalAssetName.jpg';
+  static String get eventVerticalAssetJpgExportPath => '$assetExportPath/$eventPath/$srcVerticalAssetName.jpg';
 
   static String get srcHorizontalAssetPng => '$eventSrcPath/$srcHorizontalAssetName.png';
 
   static String get srcHorizontalAssetJpg => '$eventSrcPath/$srcHorizontalAssetName.jpg';
 
-  static String get eventHorizontalAssetJpgExportPath => '$assetOutputPath/$eventPath/$srcHorizontalAssetName.jpg';
+  static String get eventHorizontalAssetJpgExportPath => '$assetExportPath/$eventPath/$srcHorizontalAssetName.jpg';
 
-  static String get ticketSrcPath => '$assetSrcPath/$ticketPath';
+  static String get ticketsFolderSourcePath => '$assetSrcPath/$ticketPath';
+
+  static String get lineupSrcFolderPath => '$assetSrcPath/$lineupPath';
+  static String get lineupExportFolderPath => '$assetExportPath/$lineupPath';
 }

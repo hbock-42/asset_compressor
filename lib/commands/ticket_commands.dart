@@ -23,9 +23,10 @@ class TicketCommand extends Command {
 class TicketBuildCommand extends Command {
   TicketBuildCommand()
       : super(
-            command: 'build',
-            description: 'build the asset for every tickets',
-            supportedFlags: {'eventid': 'id of the event -> will be used in the final asset name'});
+          command: 'build',
+          description: 'build the asset for every tickets',
+          supportedFlags: {'eventid': 'id of the event -> will be used in the final asset name'},
+        );
 
   @override
   void run(List<String> args, Map<String, dynamic> flags) async {
@@ -33,7 +34,7 @@ class TicketBuildCommand extends Command {
   }
 
   static Future<void> build({String? eventId}) async {
-    final tickets = await _verifyTicketAssets(eventId: eventId);
+    final tickets = await TicketCheckAssetCommand.checkAssets(eventId: eventId);
     for (final ticket in tickets) {
       ticket.build();
     }
@@ -41,24 +42,28 @@ class TicketBuildCommand extends Command {
 }
 
 class TicketCheckAssetCommand extends Command {
-  TicketCheckAssetCommand() : super(command: 'check-asset', description: 'checks asset necessary for a ticket');
+  TicketCheckAssetCommand()
+      : super(
+          command: 'check-asset',
+          description: 'checks asset necessary for a ticket',
+        );
 
   @override
   void run(List<String> args, Map<String, dynamic> flags) async {
-    await _verifyTicketAssets();
+    await checkAssets();
+  }
+
+  static Future<List<Ticket>> checkAssets({String? eventId}) async {
+    final ticketSrcDirectoryExists = await checkDirectoryExists(Conf.ticketsFolderSourcePath);
+    if (!ticketSrcDirectoryExists) {
+      throw MissingDirectoryException(Conf.ticketsFolderSourcePath);
+    }
+    return _getTickets(Conf.ticketsFolderSourcePath, eventId: eventId);
   }
 }
 
-Future<List<Ticket>> _verifyTicketAssets({String? eventId}) async {
-  final ticketSrcDirectoryExists = await checkDirectoryExists(Conf.ticketSrcPath);
-  if (!ticketSrcDirectoryExists) {
-    throw MissingDirectoryException(Conf.ticketSrcPath);
-  }
-  return _getTickets(Conf.ticketSrcPath, eventId: eventId);
-}
-
-Future<List<Ticket>> _getTickets(String ticketsSrcPath, {String? eventId}) async {
-  final dir = Directory(ticketsSrcPath);
+Future<List<Ticket>> _getTickets(String ticketsFolderSourcePath, {String? eventId}) async {
+  final dir = Directory(ticketsFolderSourcePath);
   final List<FileSystemEntity> entities = await dir.list().toList();
   List<Ticket> tickets = [];
   for (final entity in entities) {
@@ -82,26 +87,29 @@ Future<List<Ticket>> _getTickets(String ticketsSrcPath, {String? eventId}) async
 }
 
 Future<Ticket> _getTicket(String ticketPath, String baseName, {String? eventId}) async {
-  final ticket = Ticket(ticketFolderPath: ticketPath, baseName: baseName, eventId: eventId);
+  final ticket = Ticket(folderPath: ticketPath, baseName: baseName, eventId: eventId);
   final dir = Directory(ticketPath);
   final List<FileSystemEntity> entities = await dir.list().toList();
   for (final entity in entities) {
     if (entity is File) {
       if (Conf.threeDExtensions.contains(entity.extension)) {
         if (ticket.has3D == true) {
-          throw AlreadyPresentFileTypeException(fileType: '3D', extensions: Conf.threeDExtensions, directoryPath: ticketPath);
+          throw AlreadyPresentFileTypeException(
+              fileType: '3D', extensions: Conf.threeDExtensions, directoryPath: ticketPath);
         }
         ticket.threeDPath = entity.path;
         ticket.has3D = true;
       } else if (Conf.imageExtensions.contains(entity.extension)) {
         if (ticket.hasImage == true) {
-          throw AlreadyPresentFileTypeException(fileType: 'Image', extensions: Conf.imageExtensions, directoryPath: ticketPath);
+          throw AlreadyPresentFileTypeException(
+              fileType: 'Image', extensions: Conf.imageExtensions, directoryPath: ticketPath);
         }
         ticket.imagePath = entity.path;
         ticket.hasImage = true;
       } else if (Conf.videoExtensions.contains(entity.extension)) {
         if (ticket.hasVideo == true) {
-          throw AlreadyPresentFileTypeException(fileType: 'Video', extensions: Conf.videoExtensions, directoryPath: ticketPath);
+          throw AlreadyPresentFileTypeException(
+              fileType: 'Video', extensions: Conf.videoExtensions, directoryPath: ticketPath);
         }
         ticket.videoPath = entity.path;
         ticket.hasVideo = true;
