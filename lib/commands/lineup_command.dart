@@ -7,6 +7,7 @@ import 'package:bosun/bosun.dart';
 import '../conf.dart';
 import '../exceptions/exception_exports.dart';
 import '../helpers/helper_exports.dart';
+import '../helpers/logger.dart';
 
 class LineupCommand extends Command {
   LineupCommand()
@@ -50,7 +51,9 @@ class LineupCheckAssetCommand extends Command {
 
   @override
   void run(List<String> args, Map<String, dynamic> flags) async {
+    Logger.print('Start checking lineup assets ...', forceVerbose: true);
     await checkAssets();
+    Logger.success('No error found in the lineup assets ...', forceVerbose: true);
   }
 
   static Future<List<Lineup>> checkAssets({String? eventId}) async {
@@ -73,14 +76,13 @@ Future<List<Lineup>> _getLineups(String lineupFolderSourcePath, {String? eventId
         lineups.add(ticket);
       }
     } else if (entity is Directory) {
-      stdout.writeln(
-          'The asset "${entity.path}" will not be treated. Only files should be in the lineup folder "$lineupFolderSourcePath".');
+      Logger.warning('The asset "${entity.path}" will not be treated. Only files should be in the lineup folder "$lineupFolderSourcePath".', forceVerbose: true);
     }
   }
   if (lineups.isEmpty) {
-    stdout.writeln('No lineup file found in the lineup folder "$lineupFolderSourcePath".');
+    Logger.error('No lineup file found in the lineup folder "$lineupFolderSourcePath".', forceVerbose: true);
   } else {
-    stdout.writeln('${lineups.length} items found in the lineup folder "$lineupFolderSourcePath".');
+    Logger.std('${lineups.length} items found in the lineup folder "$lineupFolderSourcePath".', forceVerbose: true);
   }
   return lineups;
 }
@@ -88,7 +90,7 @@ Future<List<Lineup>> _getLineups(String lineupFolderSourcePath, {String? eventId
 Future<Lineup> _getLineup(FileSystemEntity entity, {String? eventId}) async {
   if (Conf.imageExtensions.contains(entity.extension)) {
     final lineup = Lineup(path: entity.path, baseName: entity.nameWithoutExtension, eventId: eventId);
-    stdout.writeln('A lineup with base name "${lineup.baseName}" will be created.');
+    Logger.std('A lineup with base name "${lineup.baseName}" will be created.', forceVerbose: true);
     return lineup;
   }
   throw WrongLineupFileTypeException(wrongExtension: entity.extension, fileWithWrongTypePath: entity.path);

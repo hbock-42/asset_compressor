@@ -3,16 +3,25 @@ import 'dart:io';
 import 'package:asset_compressor/commands/event_commands.dart';
 import 'package:asset_compressor/commands/lineup_command.dart';
 import 'package:asset_compressor/commands/ticket_commands.dart';
+import 'package:asset_compressor/parameters_from_args.dart';
 
 import 'package:bosun/bosun.dart';
 
 void main(List<String> args) {
+  if (args.contains('--verbose')) {
+    ParametersFromArgs.verbose = true;
+  }
   execute(
-    BosunCommand('asset-compressor', subcommands: [
-      EventCommand(),
-      TicketCommand(),
-      LineupCommand(),
-    ]),
+    BosunCommand(
+      'asset-compressor',
+      subcommands: [
+        EventCommand(),
+        TicketCommand(),
+        LineupCommand(),
+      ],
+      description:
+          'CLI for compressing and resizing assets.\n\nUse --verbose to show logs\n\nCommands:\n- event\n- ticket\n- lineup\n\nRun one of the above commande to have more information on how to use them',
+    ),
     args,
   );
 }

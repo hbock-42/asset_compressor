@@ -14,3 +14,4 @@ dev_dependencies:
   test: ^1.16.0
 dependencies:
   bosun: ^0.2.2
+  chalk: ^1.2.1

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:asset_compressor/extensions/extensions_on_file_system_entity.dart';
+import 'package:asset_compressor/helpers/logger.dart';
 import 'package:bosun/bosun.dart';
 
 import '../conf.dart';
@@ -34,6 +35,7 @@ class TicketBuildCommand extends Command {
   }
 
   static Future<void> build({String? eventId}) async {
+    Logger.print('Start building tickets assets ...', forceVerbose: true);
     final tickets = await TicketCheckAssetCommand.checkAssets(eventId: eventId);
     for (final ticket in tickets) {
       ticket.build();
@@ -50,7 +52,9 @@ class TicketCheckAssetCommand extends Command {
 
   @override
   void run(List<String> args, Map<String, dynamic> flags) async {
+    Logger.print('Start checking tickets assets ...', forceVerbose: true);
     await checkAssets();
+    Logger.success('No error found in the tickets assets ...', forceVerbose: true);
   }
 
   static Future<List<Ticket>> checkAssets({String? eventId}) async {
@@ -69,8 +73,7 @@ Future<List<Ticket>> _getTickets(String ticketsFolderSourcePath, {String? eventI
   for (final entity in entities) {
     if (entity is File) {
       if (entity.name != '.DS_Store') {
-        stdout.writeln(
-            'The asset "${entity.path}" will not be treated. Every ticket asset should be in a directory which name will be used to name the resulting assets base name.');
+        Logger.warning('The asset "${entity.path}" will not be treated. Every ticket asset should be in a directory which name will be used to name the resulting assets base name.', forceVerbose: true);
       }
     } else if (entity is Directory) {
       final ticket = await _getTicket(entity.path, entity.name, eventId: eventId);
@@ -80,8 +83,7 @@ Future<List<Ticket>> _getTickets(String ticketsFolderSourcePath, {String? eventI
   if (tickets.isEmpty) {
     throw MissingTicketFolderException();
   } else {
-    stdout.writeln(
-        'The ticket build command should result in the creation of ${tickets.length} ticket${tickets.length > 1 ? 's' : ''}.');
+    Logger.std('The ticket build command should result in the creation of ${tickets.length} ticket${tickets.length > 1 ? 's' : ''}.', forceVerbose: true);
     return tickets;
   }
 }
@@ -117,6 +119,6 @@ Future<Ticket> _getTicket(String ticketPath, String baseName, {String? eventId})
     }
   }
   ticket.validate();
-  stdout.writeln('A ticket with base name "${ticket.baseName}" will be created.');
+  Logger.std('A ticket with base name "${ticket.baseName}" will be created.', forceVerbose: true);
   return ticket;
 }

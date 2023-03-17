@@ -1,11 +1,11 @@
 import 'dart:io';
 
-
 import 'package:asset_compressor/extensions/extensions_on_file_system_entity.dart';
 
 import 'conf.dart';
 import 'exceptions/exception_exports.dart';
 import 'helpers/helper_exports.dart';
+import 'helpers/logger.dart';
 
 class Ticket {
   final String folderPath;
@@ -79,9 +79,8 @@ class Ticket {
       ],
       workingDirectory: './',
     ).then((result) {
-      print(result.stdout);
-      stdout.write(result.stdout);
-      stderr.write(result.stderr);
+      Logger.std(result.stdout);
+      Logger.error(result.stderr);
     });
   }
 
@@ -111,9 +110,8 @@ class Ticket {
       ],
       workingDirectory: './',
     ).then((result) {
-      print(result.stdout);
-      stdout.write(result.stdout);
-      stderr.write(result.stderr);
+      Logger.std(result.stdout);
+      Logger.error(result.stderr);
     });
   }
 
@@ -145,9 +143,8 @@ class Ticket {
       ],
       workingDirectory: './',
     ).then((result) {
-      print(result.stdout);
-      stdout.write(result.stdout);
-      stderr.write(result.stderr);
+      Logger.std(result.stdout);
+      Logger.error(result.stderr);
     });
   }
 
@@ -182,9 +179,8 @@ class Ticket {
       ],
       workingDirectory: './',
     ).then((result) {
-      print(result.stdout);
-      stdout.write(result.stdout);
-      stderr.write(result.stderr);
+      Logger.std(result.stdout);
+      Logger.error(result.stderr);
     });
   }
 }

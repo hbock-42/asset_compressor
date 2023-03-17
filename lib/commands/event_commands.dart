@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:asset_compressor/helpers/logger.dart';
 import 'package:bosun/bosun.dart';
 
 import '../conf.dart';
@@ -19,12 +20,13 @@ class EventCommand extends Command {
 }
 
 class EventBuildAssetCommand extends Command {
-  EventBuildAssetCommand() : super(command: 'build', description: 'builds the vertical and horizontal asset of an event assets');
+  EventBuildAssetCommand()
+      : super(command: 'build', description: 'builds the vertical and horizontal asset of an event assets');
 
   @override
   void run(List<String> args, Map<String, dynamic> flags) async {
     await EventCheckAssetCommand.checkAssets();
-    // This will be executed before the command above is executed
+    Logger.print('Start building event assets ...', forceVerbose: true);
     final verticalSrcPath =
         await checkFileExists(Conf.srcVerticalAssetJpg) ? Conf.srcVerticalAssetJpg : Conf.srcVerticalAssetPng;
     createDirectoryIfDoNotExists('${Conf.assetExportPath}/${Conf.eventPath}');
@@ -42,6 +44,9 @@ class EventBuildAssetCommand extends Command {
       width: Conf.eventHorizontalWidth,
       height: Conf.eventHorizontalHeight,
     );
+    Logger.success('Event assets built with success !', forceVerbose: true);
+    Logger.success(verticalSrcPath, forceVerbose: true);
+    Logger.success(horizontalSrcPath, forceVerbose: true);
   }
 }
 
@@ -59,8 +64,8 @@ void _compressImageAsset(
           ],
           workingDirectory: './')
       .then((result) {
-    stdout.writeln(result.stdout);
-    stderr.writeln(result.stderr);
+    Logger.std(result.stdout);
+    Logger.error(result.stderr);
   });
 }
 
@@ -69,7 +74,9 @@ class EventCheckAssetCommand extends Command {
 
   @override
   void run(List<String> args, Map<String, dynamic> flags) async {
+    Logger.print('Start checking event assets ...', forceVerbose: true);
     await checkAssets();
+    Logger.success('No error found in the event assets ...', forceVerbose: true);
   }
 
   static Future<void> checkAssets() async {

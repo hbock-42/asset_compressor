@@ -44,6 +44,13 @@
             </list>
           </value>
         </entry>
+        <entry key="chalk">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/chalk-1.2.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="collection">
           <value>
             <list>
@@ -347,6 +354,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/async-2.10.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/bosun-0.2.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/chalk-1.2.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/collection-1.17.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/convert-3.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/coverage-1.6.3/lib" />
