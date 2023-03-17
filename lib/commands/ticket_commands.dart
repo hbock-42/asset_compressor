@@ -106,6 +106,7 @@ Future<Ticket> _getTicket(String ticketPath, String baseName, {String? eventId})
           throw AlreadyPresentFileTypeException(
               fileType: 'Image', extensions: Conf.imageExtensions, directoryPath: ticketPath);
         }
+        throwIfImageHasAlpha(entity.path);
         ticket.imagePath = entity.path;
         ticket.hasImage = true;
       } else if (Conf.videoExtensions.contains(entity.extension)) {

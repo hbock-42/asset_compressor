@@ -52,7 +52,13 @@ class LineupCheckAssetCommand extends Command {
   @override
   void run(List<String> args, Map<String, dynamic> flags) async {
     Logger.print('Start checking lineup assets ...', forceVerbose: true);
-    await checkAssets();
+    try {
+      await checkAssets();
+    }
+    catch (e) {
+      Logger.error(e.toString());
+      rethrow;
+    }
     Logger.success('No error found in the lineup assets ...', forceVerbose: true);
   }
 
@@ -72,8 +78,8 @@ Future<List<Lineup>> _getLineups(String lineupFolderSourcePath, {String? eventId
   for (final entity in entities) {
     if (entity is File) {
       if (entity.name != '.DS_Store') {
-        final ticket = await _getLineup(entity, eventId: eventId);
-        lineups.add(ticket);
+        final lineup = await _getLineup(entity, eventId: eventId);
+        lineups.add(lineup);
       }
     } else if (entity is Directory) {
       Logger.warning('The asset "${entity.path}" will not be treated. Only files should be in the lineup folder "$lineupFolderSourcePath".', forceVerbose: true);

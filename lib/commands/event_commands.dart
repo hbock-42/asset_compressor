@@ -88,11 +88,26 @@ class EventCheckAssetCommand extends Command {
     final verticalAssetJpgExists = await checkFileExists(Conf.srcVerticalAssetJpg);
     if (!verticalAssetPngExists && !verticalAssetJpgExists) {
       throw MissingFileException([Conf.srcVerticalAssetPng, Conf.srcVerticalAssetJpg]);
+    } else {
+      if (verticalAssetPngExists) {
+        throwIfImageHasAlpha(Conf.srcVerticalAssetPng);
+      }
+      if (verticalAssetJpgExists) {
+        throwIfImageHasAlpha(Conf.srcVerticalAssetJpg);
+      }
     }
     final horizontalAssetPngExists = await checkFileExists(Conf.srcHorizontalAssetPng);
     final horizontalAssetJpgExists = await checkFileExists(Conf.srcHorizontalAssetJpg);
     if (!horizontalAssetPngExists && !horizontalAssetJpgExists) {
       throw MissingFileException([Conf.srcHorizontalAssetPng, Conf.srcHorizontalAssetJpg]);
+    } else {
+      if (horizontalAssetPngExists) {
+        throwIfImageHasAlpha(Conf.srcHorizontalAssetPng);
+      }
+      if (horizontalAssetJpgExists) {
+        throwIfImageHasAlpha(Conf.srcHorizontalAssetJpg);
+      }
     }
   }
 }
+
