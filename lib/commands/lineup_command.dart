@@ -7,7 +7,6 @@ import 'package:bosun/bosun.dart';
 import '../conf.dart';
 import '../exceptions/exception_exports.dart';
 import '../helpers/helper_exports.dart';
-import '../helpers/logger.dart';
 
 class LineupCommand extends Command {
   LineupCommand()

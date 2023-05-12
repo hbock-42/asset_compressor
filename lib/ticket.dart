@@ -1,22 +1,24 @@
 import 'dart:io';
 
 import 'package:asset_compressor/extensions/extensions_on_file_system_entity.dart';
+import 'package:fpdart/fpdart.dart';
 
 import 'conf.dart';
 import 'exceptions/exception_exports.dart';
 import 'helpers/helper_exports.dart';
-import 'helpers/logger.dart';
 
 class Ticket {
   final String folderPath;
   final String baseName;
   final String? eventId;
+  final Option<int> webpQualityOption;
 
   Ticket({
     required this.folderPath,
     required this.baseName,
+    required this.webpQualityOption,
     this.eventId,
-  });
+  }) : assert(webpQualityOption.fold(() => true, (webpQuality) => webpQuality >= 0 && webpQuality <= 100));
 
   String get exportFolderPath => '${Conf.assetExportPath}/${Conf.ticketPath}/$baseName';
 
@@ -85,11 +87,11 @@ class Ticket {
   }
 
   void _buildWebP() {
-    _convertVideoToWeb(maxWidth: Conf.displayMaxWidth, maxHeight: Conf.displayMaxHeight, assetTypeName: 'display');
+    _convertVideoToWebp(maxWidth: Conf.displayMaxWidth, maxHeight: Conf.displayMaxHeight, assetTypeName: 'display');
   }
 
   /// [assetTypeName] is added after the name of the asset. It can be something like 'artifact', 'display', etc ...
-  void _convertVideoToWeb({required int maxWidth, required int maxHeight, required String assetTypeName}) {
+  void _convertVideoToWebp({required int maxWidth, required int maxHeight, required String assetTypeName}) {
     Process.run(
       'ffmpeg',
       [
@@ -102,7 +104,7 @@ class Ticket {
         '-compression_level',
         '6',
         '-quality',
-        '90',
+        webpQualityOption.fold(() => '80', (webpQuality) => webpQuality.toString()),
         '-loop',
         '0',
         '-y',
@@ -117,8 +119,7 @@ class Ticket {
 
   void _build3D() {
     final file = File(threeDPath!);
-    file.copySync(
-        '$exportFolderPath/${eventId != null ? '${eventId}_' : ''}${baseName}_artifact.${file.extension}');
+    file.copySync('$exportFolderPath/${eventId != null ? '${eventId}_' : ''}${baseName}_artifact.${file.extension}');
   }
 
   void _createThumbnailFromVideo() {
