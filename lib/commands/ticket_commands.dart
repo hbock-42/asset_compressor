@@ -40,11 +40,22 @@ class TicketCommandsFlagsValues {
   });
 
   factory TicketCommandsFlagsValues.fromJson(Map<String, dynamic> flags) {
+    final unRecognizedFlags = <String>[];
+    flags.keys.forEach((key) {
+      Logger.std('testing flag $key', forceVerbose: true);
+      if (!TicketBuildCommandFlags.values.map((v) => v.value).contains(key)) {
+        unRecognizedFlags.add(key);
+      }
+    });
+    if (unRecognizedFlags.isNotEmpty) {
+      // todo: create specific exception and return a list of usable flags and how to use them
+      throw Exception('Unknown flag[s] => $unRecognizedFlags');
+    }
+
     final Option<String> eventIdOption = Option.tryCatch(() => flags[TicketBuildCommandFlags.eventId.value]);
     final Option<int> webpQualityOption =
     Option.tryCatch(() => int.parse(flags[TicketBuildCommandFlags.webpQuality.value]));
     // todo: show found flags and their values
-    // todo: raise if an unknown flag is used
     final flagValues = TicketCommandsFlagsValues(
       eventIdOption: eventIdOption,
       webpQualityOption: webpQualityOption,
